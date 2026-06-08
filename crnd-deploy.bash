@@ -23,15 +23,16 @@
 
 # Supports passing parametrs as environment variables and as arguments to script
 # Environment vars and default values:
-#   ODOO_USER=odoo
-#   ODOO_INSTALL_DIR=/opt/odoo
-#   ODOO_DB_HOST=localhost
-#   ODOO_DB_USER=odoo
-#   ODOO_DB_PASSWORD=odoo
-#   ODOO_REPO=https://github.com/odoo/odoo
-#   ODOO_BRANCH=15.0
-#   ODOO_VERSION=15.0
-#   ODOO_WORKERS=2
+ODOO_USER=axanta
+ODOO_INSTALL_DIR=/opt/axanta
+ODOO_DB_HOST=localhost
+ODOO_DB_USER=axanta
+ODOO_DB_PASSWORD=axanta
+ODOO_REPO=https://github.com/odoo/odoo
+ODOO_BRANCH=16.0
+ODOO_VERSION=16.0
+ODOO_WORKERS=2
+INSTALL_MODE=git
 #
 # Also some configuration could be passed as command line args:
 #   sudo bash crnd-deploy.bash <db_host> <db_user> <db_pass>
@@ -56,20 +57,20 @@ CRND_DEPLOY_VERSION="1.1.1"
 #--------------------------------------------------
 # Defaults
 #--------------------------------------------------
-DEFAULT_ODOO_BRANCH=15.0
-DEFAULT_ODOO_VERSION=15.0
+DEFAULT_ODOO_BRANCH=16.0
+DEFAULT_ODOO_VERSION=16.0
 #--------------------------------------------------
 # Parse environment variables
 #--------------------------------------------------
 ODOO_REPO=${ODOO_REPO:-https://github.com/odoo/odoo};
 ODOO_BRANCH=${ODOO_BRANCH:-$DEFAULT_ODOO_BRANCH};
 ODOO_VERSION=${ODOO_VERSION:-$DEFAULT_ODOO_VERSION};
-ODOO_USER=${ODOO_USER:-odoo};
+ODOO_USER=${ODOO_USER:-axanta};
 ODOO_WORKERS=${ODOO_WORKERS:-2};
-PROJECT_ROOT_DIR=${ODOO_INSTALL_DIR:-/opt/odoo};
+PROJECT_ROOT_DIR=${ODOO_INSTALL_DIR:-/opt/axanta};
 DB_HOST=${ODOO_DB_HOST:-localhost};
-DB_USER=${ODOO_DB_USER:-odoo};
-DB_PASSWORD=${ODOO_DB_PASSWORD:-odoo};
+DB_USER=${ODOO_DB_USER:-axanta};
+DB_PASSWORD=${ODOO_DB_PASSWORD:-axanta};
 INSTALL_MODE=${INSTALL_MODE:-archive};
 
 
@@ -366,8 +367,8 @@ config_set_defaults;  # imported from common module
 
 # define addons path to be placed in config files
 ADDONS_PATH="$ODOO_PATH/openerp/addons,$ODOO_PATH/odoo/addons,$ODOO_PATH/addons,$ADDONS_DIR";
-INIT_SCRIPT="/etc/init.d/odoo";
-ODOO_PID_FILE="/var/run/odoo.pid";  # default odoo pid file location
+INIT_SCRIPT="/etc/init.d/axanta";
+ODOO_PID_FILE="/var/run/axanta.pid";  # default odoo pid file location
 
 install_create_project_dir_tree;   # imported from 'install' module
 
@@ -431,22 +432,22 @@ if ! getent passwd $ODOO_USER  > /dev/null; then
     sudo adduser --system --no-create-home --home $PROJECT_ROOT_DIR \
         --quiet --group $ODOO_USER;
 else
-    echo -e "\n${YELLOWC}Odoo user already exists, using it.${NC}\n";
+    echo -e "\n${YELLOWC}Axanta user already exists, using it.${NC}\n";
 fi
 
 #--------------------------------------------------
 # Create Init Script
 #--------------------------------------------------
 echo -e "\n${BLUEC}Creating init script${NC}\n";
-sudo cp $ODOO_PATH/debian/init /etc/init.d/odoo
-sudo chmod a+x /etc/init.d/odoo
-sed -i -r "s@DAEMON=(.*)@DAEMON=$(get_server_script)@" /etc/init.d/odoo;
-sed -i -r "s@CONFIG=(.*)@CONFIG=$ODOO_CONF_FILE@" /etc/init.d/odoo;
-sed -i -r "s@LOGFILE=(.*)@LOGFILE=$LOG_FILE@" /etc/init.d/odoo;
-sed -i -r "s@USER=(.*)@USER=$ODOO_USER@" /etc/init.d/odoo;
-sed -i -r "s@PIDFILE=(.*)@PIDFILE=$ODOO_PID_FILE@" /etc/init.d/odoo;
-sed -i -r "s@PATH=(.*)@PATH=\1:$VENV_DIR/bin@" /etc/init.d/odoo;
-sudo update-rc.d odoo defaults
+sudo cp $ODOO_PATH/debian/init $INIT_SCRIPT
+sudo chmod a+x $INIT_SCRIPT
+sed -i -r "s@DAEMON=(.*)@DAEMON=$(get_server_script)@" $INIT_SCRIPT;
+sed -i -r "s@CONFIG=(.*)@CONFIG=$ODOO_CONF_FILE@" $INIT_SCRIPT;
+sed -i -r "s@LOGFILE=(.*)@LOGFILE=$LOG_FILE@" $INIT_SCRIPT;
+sed -i -r "s@USER=(.*)@USER=$ODOO_USER@" $INIT_SCRIPT;
+sed -i -r "s@PIDFILE=(.*)@PIDFILE=$ODOO_PID_FILE@" $INIT_SCRIPT;
+sed -i -r "s@PATH=(.*)@PATH=\1:$VENV_DIR/bin@" $INIT_SCRIPT;
+sudo update-rc.d axanta defaults
 
 # Configuration file
 sudo chown root:$ODOO_USER $ODOO_CONF_FILE;
@@ -466,7 +467,7 @@ sudo chown $ODOO_USER:$ODOO_USER $PROJECT_ROOT_DIR;
 # Configure logrotate
 #--------------------------------------------------
 echo -e "\n${BLUEC}Configuring logrotate${NC}\n";
-sudo cat > /etc/logrotate.d/odoo << EOF
+sudo cat > /etc/logrotate.d/axanta << EOF
 $LOG_DIR/*.log {
     copytruncate
     missingok
