@@ -123,7 +123,7 @@ Basically to install [Odoo](https://www.odoo.com/) on new machine you have to do
 
 ```sh
 # Download script from github
-git clone https://github.com/crnd-inc/crnd-deploy
+git clone https://github.com/faizan-axanta/crnd-deploy
 
 # Install odoo
 sudo bash crnd-deploy/crnd-deploy.bash --odoo-version 15.0 --local-postgres --local-nginx
