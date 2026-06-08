@@ -32,7 +32,6 @@ ODOO_REPO=https://github.com/odoo/odoo
 ODOO_BRANCH=16.0
 ODOO_VERSION=16.0
 ODOO_WORKERS=2
-INSTALL_MODE=git
 #
 # Also some configuration could be passed as command line args:
 #   sudo bash crnd-deploy.bash <db_host> <db_user> <db_pass>
