@@ -32,6 +32,9 @@ ODOO_REPO=https://github.com/odoo/odoo
 ODOO_BRANCH=16.0
 ODOO_VERSION=16.0
 ODOO_WORKERS=5
+ODOO_CONF_FILE=/opt/axanta/conf/axanta.conf
+LOG_FILE=/opt/axanta/logs/odoo.log
+
 #
 # Also some configuration could be passed as command line args:
 #   sudo bash crnd-deploy.bash <db_host> <db_user> <db_pass>
@@ -164,8 +167,6 @@ Suggestion:
 Version: ${CRND_DEPLOY_VERSION}
 ";
 }
-
-echo $ODOO_CONF_FILE
 
 #--------------------------------------------------
 # Parse command line
@@ -356,6 +357,14 @@ echo -e "\n${BLUEC}Installing odoo...${NC}\n";
 # import odoo-helper common module, which contains some useful functions
 source $(odoo-helper system lib-path common);
 
+
+#--------------------------------------------------
+# Install Axanta
+#--------------------------------------------------
+echo -e "\n${BLUEC}Installing Axanta...${NC}\n";
+git clone --depth 1 --branch 16.0 https://github.com/burhanghee/ax-addons-16.git $ODOO_PATH
+$ODOO_PATH/venv/bin/python pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib pandas==2.0.3 psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter
+
 # import odoo-helper libs
 ohelper_require 'install';
 ohelper_require 'config';
@@ -367,7 +376,8 @@ ALWAYS_ANSWER_YES=1;
 config_set_defaults;  # imported from common module
 
 # define addons path to be placed in config files
-ADDONS_PATH="$ODOO_PATH/openerp/addons,$ODOO_PATH/odoo/addons,$ODOO_PATH/addons,$ADDONS_DIR";
+AXANTA_ADDONS_DIR=$ODOO_PATH/ax-addons-16,$ODOO_PATH/ax-addons-16/oca_addons,$ODOO_PATH/ax-addons-16/3rd_party_addons,$ODOO_PATH/ax-addons-16/oca_reporting_addons,$ODOO_PATH/ax-addons-16/tier_validation,$ODOO_PATH/ax-addons-16/client_addons,$ODOO_PATH/ax-addons-16/oca_operating_unit;
+ADDONS_PATH="$ODOO_PATH/openerp/addons,$ODOO_PATH/odoo/addons,$ODOO_PATH/addons,$ADDONS_DIR,$AXANTA_ADDONS_DIR";
 INIT_SCRIPT="/etc/init.d/axanta";
 ODOO_PID_FILE="/var/run/axanta.pid";  # default odoo pid file location
 
