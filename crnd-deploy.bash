@@ -310,6 +310,20 @@ update-locale LANG="en_US.UTF-8";
 update-locale LANGUAGE="en_US:en";
 
 #--------------------------------------------------
+# Install wkhtmltopdf 
+#--------------------------------------------------
+echo -e "\n${BLUEC}Installing wkhtmltopdf...${NC}\n";
+apt update
+apt install -y software-properties-common
+add-apt-repository -y universe
+apt update
+apt install -y wkhtmltopdf fontconfig fonts-dejavu-core fonts-liberation
+
+echo -e "\n${GREENC}Installed wkhtmltopdf...${NC}\n";
+wkhtmltopdf --version
+which wkhtmltopdf
+
+#--------------------------------------------------
 # Ensure odoo-helper installed
 #--------------------------------------------------
 if ! command -v odoo-helper >/dev/null 2>&1; then
@@ -357,13 +371,6 @@ echo -e "\n${BLUEC}Installing odoo...${NC}\n";
 # import odoo-helper common module, which contains some useful functions
 source $(odoo-helper system lib-path common);
 
-
-#--------------------------------------------------
-# Install Axanta
-#--------------------------------------------------
-echo -e "\n${BLUEC}Installing Axanta...${NC}\n";
-git clone --depth 1 --branch 16.0 https://github.com/burhanghee/ax-addons-16.git $ODOO_PATH
-$ODOO_PATH/venv/bin/python pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib pandas==2.0.3 psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter
 
 # import odoo-helper libs
 ohelper_require 'install';
@@ -487,6 +494,13 @@ $LOG_DIR/*.log {
 EOF
 
 echo -e "\n${GREENC}Odoo installed!${NC}\n";
+
+#--------------------------------------------------
+# Install Axanta
+#--------------------------------------------------
+echo -e "\n${BLUEC}Installing Axanta...${NC}\n";
+git clone --depth 1 --branch 16.0 https://github.com/burhanghee/ax-addons-16.git $ODOO_PATH
+$ODOO_PATH/venv/bin/python pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib pandas==2.0.3 psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter
 
 if [ ! -z $INSTALL_LOCAL_NGINX ]; then
     echo -e "${BLUEC}Installing and configuring local nginx..,${NC}";
