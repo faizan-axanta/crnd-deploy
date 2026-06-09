@@ -507,7 +507,7 @@ else
     echo -e "\n${YELLOWC}Axanta already exists.${NC}\n";
 fi
 
-$ODOO_PATH/../venv/bin/pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib pandas==2.0.3 psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter
+$ODOO_PATH/../venv/bin/pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter
 
 echo -e "\n${GREENC}Axanta installed!${NC}\n";
 
