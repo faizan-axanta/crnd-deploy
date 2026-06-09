@@ -33,7 +33,7 @@ ODOO_BRANCH=16.0
 ODOO_VERSION=16.0
 ODOO_WORKERS=5
 ODOO_CONF_FILE=/opt/axanta/conf/axanta.conf
-LOG_FILE=/opt/axanta/logs/odoo.log
+LOG_FILE=/opt/axanta/logs/axanta.log
 
 #
 # Also some configuration could be passed as command line args:
@@ -383,7 +383,9 @@ ALWAYS_ANSWER_YES=1;
 config_set_defaults;  # imported from common module
 
 # define addons path to be placed in config files
-AXANTA_ADDONS_DIR=$ODOO_PATH/ax-addons-16,$ODOO_PATH/ax-addons-16/oca_addons,$ODOO_PATH/ax-addons-16/3rd_party_addons,$ODOO_PATH/ax-addons-16/oca_reporting_addons,$ODOO_PATH/ax-addons-16/tier_validation,$ODOO_PATH/ax-addons-16/client_addons,$ODOO_PATH/ax-addons-16/oca_operating_unit;
+AXANTA_ADDONS_PATH=$ODOO_PATH/../ax-addons-16
+AXANTA_ADDONS_DIR=$AXANTA_ADDONS_PATH,$AXANTA_ADDONS_PATH/oca_addons,$AXANTA_ADDONS_PATH/3rd_party_addons,$AXANTA_ADDONS_PATH/oca_reporting_addons,$AXANTA_ADDONS_PATH/tier_validation,$AXANTA_ADDONS_PATH/client_addons,$AXANTA_ADDONS_PATH/oca_operating_unit;
+
 ADDONS_PATH="$ODOO_PATH/openerp/addons,$ODOO_PATH/odoo/addons,$ODOO_PATH/addons,$ADDONS_DIR,$AXANTA_ADDONS_DIR";
 INIT_SCRIPT="/etc/init.d/axanta";
 ODOO_PID_FILE="/var/run/axanta.pid";  # default odoo pid file location
@@ -446,7 +448,7 @@ fi
 # Create Odoo User
 #--------------------------------------------------
 if ! getent passwd $ODOO_USER  > /dev/null; then
-    echo -e "\n${BLUEC}Createing Odoo user: $ODOO_USER ${NC}\n";
+    echo -e "\n${BLUEC}Creating Instance user: $ODOO_USER ${NC}\n";
     sudo adduser --system --no-create-home --home $PROJECT_ROOT_DIR \
         --quiet --group $ODOO_USER;
 else
@@ -499,8 +501,11 @@ echo -e "\n${GREENC}Odoo installed!${NC}\n";
 # Install Axanta
 #--------------------------------------------------
 echo -e "\n${BLUEC}Installing Axanta...${NC}\n";
-git clone --depth 1 --branch 16.0 https://github.com/burhanghee/ax-addons-16.git $ODOO_PATH
-$ODOO_PATH/venv/bin/python pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib pandas==2.0.3 psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter
+
+git clone --depth 1 --branch 16.0 https://github.com/burhanghee/ax-addons-16.git $AXANTA_ADDONS_PATH
+$ODOO_PATH/../venv/bin/python3 pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib pandas==2.0.3 psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter
+
+echo -e "\n${GREENC}Axanta installed!${NC}\n";
 
 if [ ! -z $INSTALL_LOCAL_NGINX ]; then
     echo -e "${BLUEC}Installing and configuring local nginx..,${NC}";
