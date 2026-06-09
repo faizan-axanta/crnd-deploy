@@ -383,7 +383,7 @@ ALWAYS_ANSWER_YES=1;
 config_set_defaults;  # imported from common module
 
 # define addons path to be placed in config files
-AXANTA_ADDONS_PATH=$ODOO_PATH/../ax-addons-16
+AXANTA_ADDONS_PATH=$ODOO_INSTALL_DIR/ax-addons-16
 AXANTA_ADDONS_DIR=$AXANTA_ADDONS_PATH,$AXANTA_ADDONS_PATH/oca_addons,$AXANTA_ADDONS_PATH/3rd_party_addons,$AXANTA_ADDONS_PATH/oca_reporting_addons,$AXANTA_ADDONS_PATH/tier_validation,$AXANTA_ADDONS_PATH/client_addons,$AXANTA_ADDONS_PATH/oca_operating_unit;
 
 ADDONS_PATH="$ODOO_PATH/openerp/addons,$ODOO_PATH/odoo/addons,$ODOO_PATH/addons,$ADDONS_DIR,$AXANTA_ADDONS_DIR";
@@ -413,9 +413,19 @@ ODOO_CONF_OPTIONS[data_dir]="$DATA_DIR";
 ODOO_CONF_OPTIONS[logfile]="$LOG_FILE";
 ODOO_CONF_OPTIONS[db_host]="$DB_HOST";
 ODOO_CONF_OPTIONS[db_port]="False";
+ODOO_CONF_OPTIONS[dbfilter]="False";
 ODOO_CONF_OPTIONS[db_user]="$DB_USER";
 ODOO_CONF_OPTIONS[db_password]="$DB_PASSWORD";
 ODOO_CONF_OPTIONS[workers]=$ODOO_WORKERS;
+ODOO_CONF_OPTIONS[max_cron_threads]=1;
+ODOO_CONF_OPTIONS[limit_memory_hard]=24159191040000;
+ODOO_CONF_OPTIONS[limit_memory_soft]=20132659200000;
+ODOO_CONF_OPTIONS[limit_time_real]=3000000;
+ODOO_CONF_OPTIONS[limit_time_cpu]=3000000;
+ODOO_CONF_OPTIONS[limit_request]=999999;
+ODOO_CONF_OPTIONS[db_maxconn]=5;
+ODOO_CONF_OPTIONS[server_wide_modules]=web,base_ext,letsencrypt;
+ODOO_CONF_OPTIONS[modules_auto_install_disabled]=partner_autocomplete;
 
 # pid file will be managed by init script, not odoo itself
 ODOO_CONF_OPTIONS[pidfile]="None";
@@ -504,7 +514,10 @@ echo -e "\n${BLUEC}Installing Axanta...${NC}\n";
 if [ ! -d $AXANTA_ADDONS_PATH ]; then
     git clone --depth 1 --branch 16.0 https://github.com/burhanghee/ax-addons-16.git $AXANTA_ADDONS_PATH
 else
-    echo -e "\n${YELLOWC}Axanta already exists.${NC}\n";
+    echo -e "\n${YELLOWC}Axanta already exists. Updating the repo${NC}\n";
+    cd $AXANTA_ADDONS_PATH
+    git pull origin 16.0
+    cd $WORKDIR
 fi
 
 $ODOO_PATH/../venv/bin/pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter
