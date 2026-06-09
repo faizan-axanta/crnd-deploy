@@ -27,7 +27,7 @@ ODOO_USER=axanta
 ODOO_INSTALL_DIR=/opt/axanta
 ODOO_DB_HOST=localhost
 ODOO_DB_USER=axanta
-ODOO_DB_PASSWORD="False"
+ODOO_DB_PASSWORD=axanta
 ODOO_REPO=https://github.com/odoo/odoo
 ODOO_BRANCH=16.0
 ODOO_VERSION=16.0
@@ -539,6 +539,9 @@ if [ ! -z $INSTALL_LOCAL_NGINX ]; then
     echo -e "${GREENC}Nginx seems to be installed and default config is generated. ";
     echo -e "Look at $NGINX_CONF_PATH for nginx config.${NC}";
 fi
+
+echo -e "\n${BLUEC}Updating DB User password for $DB_USER Server...${NC}\n";
+sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $DB_USER WITH PASSWORD '$DB_PASSWORD';"
 
 echo -e "\n${BLUEC}Starting Server...${NC}\n";
 odoo-helper start
