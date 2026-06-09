@@ -521,7 +521,7 @@ else
     echo -e "\n${YELLOWC}Axanta already exists. Updating the repo...${NC}\n";
     cd $AXANTA_ADDONS_PATH
     git checkout $AXANTA_BRANCH
-    git fetch origin $AXANTA_BRANCH
+    git pull origin $AXANTA_BRANCH
     cd $WORKDIR
     echo -e "\n${GREENC}Axanta Repo Updated!${NC}\n";
 fi
