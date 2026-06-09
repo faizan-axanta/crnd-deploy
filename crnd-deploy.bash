@@ -521,3 +521,11 @@ if [ ! -z $INSTALL_LOCAL_NGINX ]; then
     echo -e "${GREENC}Nginx seems to be installed and default config is generated. ";
     echo -e "Look at $NGINX_CONF_PATH for nginx config.${NC}";
 fi
+
+echo -e "\n${BLUEC}Starting Server...${NC}\n";
+odoo-helper start
+$INIT_SCRIPT status
+echo -e "\n${GREENC}Server Started!${NC}\n";
+
+
+echo -e "\n${BLUEC}Run: \n\t\t tail -f $LOG_FILE \nto view logs${NC}\n";
