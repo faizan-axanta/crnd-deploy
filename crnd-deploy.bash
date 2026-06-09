@@ -526,7 +526,7 @@ else
     echo -e "\n${GREENC}Axanta Repo Updated!${NC}\n";
 fi
 
-$ODOO_INSTALL_DIR/venv/bin/pip3 install -r $AXANTA_ADDONS_PATH/requirements.txt
+odoo-helper pip install -r $AXANTA_ADDONS_PATH/requirements.txt
 echo -e "\n${GREENC}Axanta installed!${NC}\n";
 
 if [ ! -z $INSTALL_LOCAL_NGINX ]; then
