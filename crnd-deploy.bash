@@ -505,7 +505,7 @@ if [ ! -d $AXANTA_ADDONS_PATH ]; then
     git clone --depth 1 --branch 16.0 https://github.com/burhanghee/ax-addons-16.git $AXANTA_ADDONS_PATH
 else
     echo -e "\n${YELLOWC}Axanta already exists.${NC}\n";
-if
+fi
 
 $ODOO_PATH/../venv/bin/pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib pandas==2.0.3 psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter
 
