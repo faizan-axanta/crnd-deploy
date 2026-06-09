@@ -35,6 +35,9 @@ ODOO_WORKERS=5
 ODOO_CONF_FILE=/opt/axanta/conf/axanta.conf
 LOG_FILE=/opt/axanta/logs/axanta.log
 
+AXANTA_REPO=https://github.com/burhanghee/ax-addons-16.git
+AXANTA_BRANCH=16.0
+
 #
 # Also some configuration could be passed as command line args:
 #   sudo bash crnd-deploy.bash <db_host> <db_user> <db_pass>
@@ -73,7 +76,7 @@ PROJECT_ROOT_DIR=${ODOO_INSTALL_DIR:-/opt/axanta};
 DB_HOST=${ODOO_DB_HOST:-localhost};
 DB_USER=${ODOO_DB_USER:-axanta};
 DB_PASSWORD=${ODOO_DB_PASSWORD:-axanta};
-INSTALL_MODE=${INSTALL_MODE:-archive};
+INSTALL_MODE=${INSTALL_MODE:-git};
 ODOO_BUILD_PYTHON_VERSION=3.10.12
 
 
@@ -513,7 +516,7 @@ echo -e "\n${GREENC}Odoo installed!${NC}\n";
 #--------------------------------------------------
 echo -e "\n${BLUEC}Installing Axanta...${NC}\n";
 if [ ! -d $AXANTA_ADDONS_PATH ]; then
-    git clone --depth 1 --branch 16.0 https://github.com/burhanghee/ax-addons-16.git $AXANTA_ADDONS_PATH
+    git clone --depth 1 --branch $AXANTA_BRANCH $AXANTA_REPO $AXANTA_ADDONS_PATH
 else
     echo -e "\n${YELLOWC}Axanta already exists. Updating the repo${NC}\n";
     cd $AXANTA_ADDONS_PATH
@@ -521,7 +524,7 @@ else
     cd $WORKDIR
 fi
 
-$ODOO_PATH/../venv/bin/pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter paramiko==3.4.0 pandas==2.0.3 xlrd==1.2.0
+$ODOO_PATH/venv/bin/pip3 install Babel==2.9.1 cryptography==3.4.8 lxml==4.6.5 MarkupSafe==1.1.1 num2words==0.5.9 Pillow==9.0.1 psutil==5.8.0 pyOpenSSL==20.0.1 PyPDF2==1.26.0 python-dateutil==2.8.1 python-stdnum==1.16 pytz==2022.1 reportlab==3.5.59 requests==2.25.1 urllib3==1.26.5 Werkzeug==2.0.2 xlrd==1.2.0 XlsxWriter==1.1.2 acme==2.10.0 astor==0.8.1 beautifulsoup4==4.12.3 boto3==1.34.113 dnspython==2.6.1 docx-mailmerge==0.5.0 geopy==2.4.1 google-auth==2.29.0 html2docx==1.6.0 josepy==1.14.0 mysql-connector==2.2.9 numpy==1.24.4 oauthlib==3.2.2 openpyxl==3.1.2 openupgradelib==3.3.0 pandas==2.0.3 paramiko==3.4.0 psycopg2==2.9.9 pybase64==1.2.0 pyfcm==1.5.4 python-docx==0.8.11 rsa==4.9
 
 echo -e "\n${GREENC}Axanta installed!${NC}\n";
 
