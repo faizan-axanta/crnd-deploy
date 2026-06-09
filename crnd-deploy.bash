@@ -74,6 +74,7 @@ DB_HOST=${ODOO_DB_HOST:-localhost};
 DB_USER=${ODOO_DB_USER:-axanta};
 DB_PASSWORD=${ODOO_DB_PASSWORD:-axanta};
 INSTALL_MODE=${INSTALL_MODE:-archive};
+ODOO_BUILD_PYTHON_VERSION=3.10.12
 
 
 #--------------------------------------------------
@@ -520,7 +521,7 @@ else
     cd $WORKDIR
 fi
 
-$ODOO_PATH/../venv/bin/pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter
+$ODOO_PATH/../venv/bin/pip3 install acme astor boto3 dnspython docx-mailmerge geopy google-auth==2.29.0 html2docx josepy mysql-connector==2.2.9 openpyxl openupgradelib psycopg2-binary pybase64==1.2.0 python-dateutil python-docx xlrd==1.2.0 XlsxWriter paramiko==3.4.0 pandas==2.0.3 xlrd==1.2.0
 
 echo -e "\n${GREENC}Axanta installed!${NC}\n";
 
@@ -534,6 +535,9 @@ if [ ! -z $INSTALL_LOCAL_NGINX ]; then
     echo -e "${GREENC}Nginx seems to be installed and default config is generated. ";
     echo -e "Look at $NGINX_CONF_PATH for nginx config.${NC}";
 fi
+
+echo -e "\n${BLUEC}Updating DB User password for $DB_USER Server...${NC}\n";
+sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $DB_USER WITH PASSWORD '$DB_PASSWORD';"
 
 echo -e "\n${BLUEC}Starting Server...${NC}\n";
 odoo-helper start
