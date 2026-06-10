@@ -23,11 +23,11 @@
 
 # Supports passing parametrs as environment variables and as arguments to script
 # Environment vars and default values:
-ODOO_USER=axanta
+ODOO_USER=axantaerp
 ODOO_INSTALL_DIR=/opt/axanta
 ODOO_DB_HOST=localhost
-ODOO_DB_USER=axanta
-ODOO_DB_PASSWORD=axanta
+ODOO_DB_USER=axantaerp
+ODOO_DB_PASSWORD=axantaerp
 ODOO_REPO=https://github.com/odoo/odoo
 ODOO_BRANCH=16.0
 ODOO_VERSION=16.0
@@ -462,7 +462,7 @@ fi
 if ! getent passwd $ODOO_USER  > /dev/null; then
     echo -e "\n${BLUEC}Creating Instance user: $ODOO_USER ${NC}\n";
     # sudo adduser --system --no-create-home --home $PROJECT_ROOT_DIR --quiet --group $ODOO_USER;
-    sudo adduser --system --quiet --shell=/bin/bash --home=$PROJECT_ROOT_DIR --gecos 'ODOO' --group $ODOO_USER;
+    sudo adduser --system --quiet --shell=/bin/bash --no-create-home --home=$PROJECT_ROOT_DIR --gecos 'ODOO' --group $ODOO_USER;
     sudo adduser $ODOO_USER sudo;
 
     echo -e "\n${BLUEC}Create Log directory for $ODOO_USER ${NC}\n";
