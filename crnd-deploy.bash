@@ -415,7 +415,6 @@ ODOO_CONF_OPTIONS[addons_path]="$ADDONS_PATH";
 ODOO_CONF_OPTIONS[admin_passwd]="$(random_string 32)";
 ODOO_CONF_OPTIONS[data_dir]="$DATA_DIR";
 ODOO_CONF_OPTIONS[logfile]="$LOG_FILE";
-ODOO_CONF_OPTIONS[db_host]="$DB_HOST";
 ODOO_CONF_OPTIONS[db_port]="False";
 ODOO_CONF_OPTIONS[dbfilter]="False";
 ODOO_CONF_OPTIONS[db_user]="$DB_USER";
@@ -462,7 +461,8 @@ fi
 #--------------------------------------------------
 if ! getent passwd $ODOO_USER  > /dev/null; then
     echo -e "\n${BLUEC}Creating Instance user: $ODOO_USER ${NC}\n";
-    sudo adduser --system --no-create-home --home $PROJECT_ROOT_DIR --quiet --group $ODOO_USER;
+    # sudo adduser --system --no-create-home --home $PROJECT_ROOT_DIR --quiet --group $ODOO_USER;
+    sudo adduser --system --quiet --shell=/bin/bash --home=$PROJECT_ROOT_DIR --gecos 'ODOO' --group $ODOO_USER;
     sudo adduser $ODOO_USER sudo;
 
     echo -e "\n${BLUEC}Create Log directory for $ODOO_USER ${NC}\n";
