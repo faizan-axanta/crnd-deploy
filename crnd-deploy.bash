@@ -23,11 +23,11 @@
 
 # Supports passing parametrs as environment variables and as arguments to script
 # Environment vars and default values:
-ODOO_USER=axantaerp
+ODOO_USER=axanta
 ODOO_INSTALL_DIR=/opt/axanta
 ODOO_DB_HOST=localhost
-ODOO_DB_USER=axantaerp
-ODOO_DB_PASSWORD=axantaerp
+ODOO_DB_USER=axanta
+ODOO_DB_PASSWORD=axanta
 ODOO_REPO=https://github.com/odoo/odoo
 ODOO_BRANCH=16.0
 ODOO_VERSION=16.0
