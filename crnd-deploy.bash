@@ -361,10 +361,10 @@ if [ ! -z $INSTALL_LOCAL_POSTGRES ]; then
 
         # It seams we ran inside docker container, so start postgres server before user creation
         /etc/init.d/postgresql start;
-        odoo-helper postgres user-create $DB_USER $DB_PASSWORD;
+        sudo su - postgres -c "createuser -s $DB_USER" 2> /dev/null || true
         /etc/init.d/postgresql stop;
     else
-        odoo-helper postgres user-create $DB_USER $DB_PASSWORD;
+        sudo su - postgres -c "createuser -s $DB_USER" 2> /dev/null || true
     fi
 fi
 
@@ -419,7 +419,6 @@ ODOO_CONF_OPTIONS[db_host]="$DB_HOST";
 ODOO_CONF_OPTIONS[db_port]="False";
 ODOO_CONF_OPTIONS[dbfilter]="False";
 ODOO_CONF_OPTIONS[db_user]="$DB_USER";
-ODOO_CONF_OPTIONS[db_password]="$DB_PASSWORD";
 ODOO_CONF_OPTIONS[workers]=$ODOO_WORKERS;
 ODOO_CONF_OPTIONS[max_cron_threads]=1;
 ODOO_CONF_OPTIONS[limit_memory_hard]=24159191040000;
@@ -463,8 +462,12 @@ fi
 #--------------------------------------------------
 if ! getent passwd $ODOO_USER  > /dev/null; then
     echo -e "\n${BLUEC}Creating Instance user: $ODOO_USER ${NC}\n";
-    sudo adduser --system --no-create-home --home $PROJECT_ROOT_DIR \
-        --quiet --group $ODOO_USER;
+    sudo adduser --system --no-create-home --home $PROJECT_ROOT_DIR --quiet --group $ODOO_USER;
+    sudo adduser $ODOO_USER sudo;
+
+    echo -e "\n${BLUEC}Create Log directory for $ODOO_USER ${NC}\n";
+    sudo mkdir /var/log/$ODOO_USER
+    sudo chown $ODOO_USER:$ODOO_USER /var/log/$ODOO_USER
 else
     echo -e "\n${YELLOWC}Axanta user already exists, using it.${NC}\n";
 fi
@@ -540,8 +543,8 @@ if [ ! -z $INSTALL_LOCAL_NGINX ]; then
     echo -e "Look at $NGINX_CONF_PATH for nginx config.${NC}";
 fi
 
-echo -e "\n${BLUEC}Updating DB User password for $DB_USER Server...${NC}\n";
-sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $DB_USER WITH PASSWORD '$DB_PASSWORD';"
+# echo -e "\n${BLUEC}Updating DB User password for $DB_USER Server...${NC}\n";
+# sudo -u postgres psql -U postgres -d postgres -c "ALTER USER $DB_USER WITH PASSWORD '$DB_PASSWORD';"
 
 echo -e "\n${BLUEC}Starting Server...${NC}\n";
 odoo-helper start
